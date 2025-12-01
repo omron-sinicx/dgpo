@@ -1,0 +1,402 @@
+theme: default
+organization: OMRON SINIC X
+twitter: '@omron_sinicx'
+title: 'Democratizing Agentic RAG: Distillation-Guided Policy Optimization for Compact Language Models'
+conference: 'NeurIPS 2025 Workshop on Bridging Language, Agent, and World Models (LAW 2025)'
+
+resources:
+  paper: https://openreview.net/forum?id=CP0H9NAWES
+  poster:
+  code:
+  video:
+  blog:
+  demo:
+  huggingface:
+
+description: >
+  We investigate whether compact language models (0.5–1B) can acquire sophisticated agentic
+  retrieval-augmented generation (RAG) behavior. While existing agentic RAG systems rely on
+  multi-billion-parameter models, compact models suffer from poor initial outputs, sparse rewards,
+  and unstable reinforcement learning dynamics. To address these challenges, we propose
+  Distillation-Guided Policy Optimization (DGPO), a two-phase training framework combining
+  cold-start knowledge distillation and selective teacher-guided reinforcement learning.
+
+image: neurips_ws_teaser_top.png
+
+
+authors:
+  - name: Rikuto Kotoge
+    affiliation: [1, 2*]
+    position: Research Intern
+    url:
+  - name: Mai Nishimura
+    affiliation: [1]
+    position: Senior Researcher
+    url: https://denkiwakame.github.io
+  - name: Jiaxin Ma
+    affiliation: [1]
+    position: Senior Researcher
+    url:
+
+affiliations:
+  - OMRON SINIC X Corporation
+  - The University of Osaka
+
+contact_ids: ['omron', 2]
+
+meta:
+  - '* Work done as a research intern at OMRON SINIC X.'
+
+bibtex: >
+  @inproceedings{
+    kotoge2025democratizing,
+    title={Democratizing Agentic {RAG}: Distillation-Guided Policy Optimization  for Compact Language Models},
+    author={Rikuto Kotoge and Mai Nishimura and Jiaxin Ma},
+    booktitle={NeurIPS 2025 Workshop on Bridging Language, Agent, and World Models for Reasoning and Planning},
+    year={2025}
+  }
+
+header:
+  bg_curve:
+    sinic_curve.png
+
+teaser: neurips_ws_teaser_top.jpg
+
+overview: |
+  This project introduces **Distillation-Guided Policy Optimization (DGPO)**, a reinforcement
+  learning framework designed to unlock agentic retrieval-augmented generation (RAG) capabilities
+  in compact language models (0.5–1B parameters). DGPO stabilizes training via:
+
+  1. **Cold-Start Initialization with Knowledge Distillation (KD)** using high-quality
+     teacher-generated trajectories.
+  2. **Selective Teacher Guidance** during RL—rewarding correct autonomous reasoning while
+     penalizing incorrect outputs via KL divergence against the teacher.
+
+  DGPO achieves up to **55× improvement** over base compact models and even surpasses its
+  3B-parameter teacher on several datasets.
+
+body:
+  - title: Challenges in Compact Agentic RAG
+    text: |
+      Applying Reinforcement Learning (RL) to compact models presents unique challenges. Unlike larger models,
+      compact models (e.g., 0.5B parameters) exhibit poor initial performance, resulting in sparse rewards
+      and unstable training dynamics.
+
+      As shown in the figures below, smaller models lag significantly behind larger counterparts in agentic RAG tasks,
+      and standard RL methods like PPO and GRPO often fail to improve performance or lead to early collapse.
+
+      <div class="uk-grid-small uk-child-width-1-2@m uk-text-center" uk-grid>
+          <div>
+              <img src="acl26_scaling.jpg" alt="Performance Gap across model sizes" style="max-width: 100%; height: auto;" />
+              <p class="uk-text-meta uk-margin-small-top">Figure 1: Comparison of prompt-based and RL-based agentic RAG performance gaps.</p>
+          </div>
+          <div>
+              <img src="acl26_limitation.jpg" alt="Training instability in small models" style="max-width: 100%; height: auto;" />
+              <p class="uk-text-meta uk-margin-small-top">Figure 2: Unstable training curves of 0.5B models using PPO and GRPO.</p>
+          </div>
+      </div>
+
+
+  - title: Distillation-Guided Policy Optimization (DGPO)
+    text: |
+
+      <div class="uk-text-center uk-margin-medium-top uk-margin-medium-bottom">
+        <img src="acl26_fig2_v3.png" alt="DGPO Framework Diagram" style="max-width: 100%; height: auto; border: none;" />
+        <p class="uk-text-meta uk-margin-small-top">Figure 3: The DGPO pipeline transforms the reference model from a passive regularizer into an active pedagogical guide.</p>
+      </div>
+
+      To overcome these challenges, we propose **Distillation-Guided Policy Optimization (DGPO)**.
+      Our framework operates in two key phases:
+
+      1.  **Cold-Start KD Initialization:** The student model is initialized by distilling from a teacher's correct
+          trajectories (TGOs). This establishes a stable foundation for reasoning.
+      2.  **Distillation-Guided RL:** We employ a "mimic if wrong, reward if right" strategy.
+          * **Correct Answer:** The student receives a reward (r=1) and updates its policy autonomously.
+          * **Incorrect Answer:** The student is penalized via KL divergence to mimic the teacher's distribution,
+              effectively using the teacher as an active guide for error correction.
+
+      The core of DGPO lies in its selective reward and penalty mechanism during the RL phase:
+
+      $$
+      r(x, y) = \begin{cases}
+      1 & \text{if } y = y^* \text{ (Reward for correct answer)} \\
+      -\beta D_{KL}[\pi_g(\cdot|x) || \pi_\theta(\cdot|x)] & \text{if } y \neq y^* \text{ (Teacher mimicry if wrong)}
+      \end{cases}
+      $$
+
+      This objective allows the student to explore when confident but forces alignment with the teacher $\pi_g$ when it fails.
+
+
+
+  - title: Agentic RAG Capabilities (ARC) Evaluation
+    text: |
+      We introduce **Agentic RAG Capabilities (ARC)**, a fine-grained metric to diagnose *how* models perform agentic search,
+      rather than just checking final answer accuracy. ARC evaluates three dimensions:
+
+      * **Thinking:** The ability to plan search steps and synthesize evidence.
+      * **Query Rewriting:** The ability to reformulate user questions into effective search queries.
+      * **Source Referencing:** The ability to accurately cite and integrate retrieved documents.
+
+      <div class="uk-text-center uk-margin-medium-top uk-margin-medium-bottom">
+        <img src="neurips_ws_teaser_bottom.jpg" alt="Agentic RAG Capabilities" style="max-width: 100%; height: auto;" />
+        <p class="uk-text-meta uk-margin-small-top">Figure 4: ARC characterizes thinking, query rewriting, and source referencing capabilities.</p>
+      </div>
+
+
+
+  - title: Experimental Results
+    text: |
+      ### Overall Performance
+      We evaluated DGPO across seven benchmarks. DGPO consistently outperforms RL baselines (PPO) and distillation baselines.
+      Remarkably, the 0.5B student model trained with DGPO approaches or even **surpasses the 3B teacher model** on datasets like NQ and HotpotQA.
+
+      <div class="uk-overflow-auto">
+      <table class="uk-table uk-table-divider uk-table-hover uk-table-small uk-text-small">
+        <thead>
+          <tr>
+            <th>Methods</th>
+            <th>NQ</th>
+            <th>TriviaQA</th>
+            <th>PopQA</th>
+            <th>HotpotQA</th>
+            <th>2wiki</th>
+            <th>MuSiQue</th>
+            <th>Bamboogle</th>
+            <th>Avg.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="color: gray;">
+            <td>Student-0.5b</td>
+            <td>0.004</td>
+            <td>0.006</td>
+            <td>0.007</td>
+            <td>0.007</td>
+            <td>0.015</td>
+            <td>0.000</td>
+            <td>0.000</td>
+            <td>0.006</td>
+          </tr>
+          <tr style="color: gray;">
+            <td>Teacher-3b</td>
+            <td>0.365</td>
+            <td>0.569</td>
+            <td>0.393</td>
+            <td>0.340</td>
+            <td>0.368</td>
+            <td>0.135</td>
+            <td>0.298</td>
+            <td>0.353</td>
+          </tr>
+          <tr>
+            <td>PPO</td>
+            <td>0.306</td>
+            <td><u>0.444</u></td>
+            <td><u>0.379</u></td>
+            <td>0.205</td>
+            <td>0.218</td>
+            <td>0.041</td>
+            <td>0.073</td>
+            <td>0.238</td>
+          </tr>
+          <tr>
+            <td>GKD</td>
+            <td>0.266</td>
+            <td>0.408</td>
+            <td>0.358</td>
+            <td>0.216</td>
+            <td>0.217</td>
+            <td>0.055</td>
+            <td>0.161</td>
+            <td>0.240</td>
+          </tr>
+          <tr>
+            <td>SeqKD</td>
+            <td>0.331</td>
+            <td>0.416</td>
+            <td>0.364</td>
+            <td>0.283</td>
+            <td>0.273</td>
+            <td>0.089</td>
+            <td>0.169</td>
+            <td>0.275</td>
+          </tr>
+          <tr>
+            <td>KD</td>
+            <td>0.331</td>
+            <td>0.431</td>
+            <td>0.373</td>
+            <td>0.286</td>
+            <td><u>0.284</u></td>
+            <td>0.091</td>
+            <td><b>0.290</b></td>
+            <td><u>0.298</u></td>
+          </tr>
+          <tr>
+            <td>DistiLLM</td>
+            <td><u>0.333</u></td>
+            <td>0.442</td>
+            <td>0.373</td>
+            <td>0.288</td>
+            <td>0.270</td>
+            <td><u>0.095</u></td>
+            <td>0.209</td>
+            <td>0.287</td>
+          </tr>
+          <tr>
+            <td>TAID</td>
+            <td>0.325</td>
+            <td>0.427</td>
+            <td>0.365</td>
+            <td><u>0.290</u></td>
+            <td>0.270</td>
+            <td>0.079</td>
+            <td>0.218</td>
+            <td>0.282</td>
+          </tr>
+          <tr style="font-weight: bold;">
+            <td>DGPO (ours)</td>
+            <td style="background-color: #d1e7dd;">0.378</td>
+            <td>0.481</td>
+            <td style="background-color: #d1e7dd;">0.402</td>
+            <td style="background-color: #d1e7dd;">0.342</td>
+            <td>0.303</td>
+            <td>0.120</td>
+            <td><u>0.274</u></td>
+            <td>0.329</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="uk-text-meta">Table 1: Overall performance. Best results are bold, second-best are underlined. Green highlight indicates outperforming the teacher.</p>
+
+      
+      ### Agentic RAG Capabilities (ARC) Analysis
+      We utilized the ARC framework to diagnose how DGPO improves agentic behaviors compared to the teacher and baselines.
+
+      * **(a) Source Referencing:** DGPO provides strong information extraction when the correct evidence is directly available.
+      * **(b) Query Rewriting:** DGPO achieves teacher-level query rewriting.
+      * **(c) Thinking:** DGPO exhibits the strongest multi-hop reasoning by taking more search steps than the teacher model.
+
+      <div>
+           <div class="uk-overflow-auto">
+             <table class="uk-table uk-table-divider uk-table-hover uk-table-small uk-text-xsmall">
+               <thead>
+                 <tr>
+                   <th>Models</th>
+                   <th colspan="2" class="uk-text-center">NQ (Single-hop)</th>
+                   <th colspan="2" class="uk-text-center">MuSiQue (Multi-hop)</th>
+                 </tr>
+                 <tr>
+                   <th></th>
+                   <th>w/o think</th>
+                   <th>w/ think</th>
+                   <th>w/o think</th>
+                   <th>w/ think</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr style="color: gray;">
+                   <td>Student-0.5B</td>
+                   <td>0.386</td>
+                   <td>0.034</td>
+                   <td>0.166</td>
+                   <td>0.013</td>
+                 </tr>
+                 <tr style="color: gray;">
+                   <td>Teacher-3B</td>
+                   <td><b>0.589</b></td>
+                   <td>0.560</td>
+                   <td><b>0.413</b></td>
+                   <td><b>0.357</b></td>
+                 </tr>
+                 <tr>
+                   <td>PPO</td>
+                   <td>0.547</td>
+                   <td>0.581</td>
+                   <td>0.258</td>
+                   <td>0.242</td>
+                 </tr>
+                 <tr>
+                   <td>KD</td>
+                   <td>0.540</td>
+                   <td>0.544</td>
+                   <td>0.321</td>
+                   <td>0.256</td>
+                 </tr>
+                 <tr style="background-color: #f8f9fa;">
+                   <td><b>DGPO (Ours)</b></td>
+                   <td>0.565</td>
+                   <td><b>0.593</b></td>
+                   <td>0.312</td>
+                   <td>0.287</td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+           <p class="uk-text-meta">Table 2: Source Referencing & Thinking Acc. (EM)</p>
+        </div>
+
+        <div>
+           <div class="uk-overflow-auto">
+             <table class="uk-table uk-table-divider uk-table-hover uk-table-small uk-text-xsmall">
+               <thead>
+                 <tr>
+                   <th>Models</th>
+                   <th>NQ (1-hop)</th>
+                   <th colspan="2" class="uk-text-center">MuSiQue (Multi-hop)</th>
+                 </tr>
+                 <tr>
+                   <th></th>
+                   <th>Hit Ratio</th>
+                   <th>Hit Ratio</th>
+                   <th>Search Steps</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr style="color: gray;">
+                   <td>Student-0.5B</td>
+                   <td>0.004</td>
+                   <td>0.052</td>
+                   <td>3.86</td>
+                 </tr>
+                 <tr style="color: gray;">
+                   <td>Teacher-3B</td>
+                   <td>0.682</td>
+                   <td>0.668</td>
+                   <td>1.60</td>
+                 </tr>
+                 <tr>
+                   <td>PPO</td>
+                   <td><b>0.711</b></td>
+                   <td>0.568</td>
+                   <td>1.68</td>
+                 </tr>
+                 <tr>
+                   <td>KD</td>
+                   <td>0.675</td>
+                   <td>0.570</td>
+                   <td>2.45</td>
+                 </tr>
+                 <tr style="background-color: #f8f9fa;">
+                   <td><b>DGPO (Ours)</b></td>
+                   <td>0.682</td>
+                   <td><b>0.583</b></td>
+                   <td>2.64</td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
+        </div>
+        <p class="uk-text-meta">Table 3: Query Rewriting & Search Efficiency</p>
+      </div>
+      
+      
+      ### Training Stability
+      DGPO maintains stable learning curves well beyond where other methods collapse. As shown below, while GRPO and standard PPO
+      struggle with the 0.5B model, DGPO sustains performance gains up to 1000 training steps.
+
+      <div class="uk-text-center uk-margin-medium-top">
+        <img src="acl_26_curve_v2.jpg" alt="Training Stability Curve" style="width: 70%; height: auto;" />
+        <p class="uk-text-meta uk-margin-small-top">Figure 5: Training stability comparison. DGPO (red) maintains stable improvement while baselines collapse.</p>
+      </div>
