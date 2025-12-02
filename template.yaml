@@ -2,7 +2,7 @@ theme: default
 organization: OMRON SINIC X
 twitter: '@omron_sinicx'
 title: 'Democratizing Agentic RAG: Distillation-Guided Policy Optimization for Compact Language Models'
-conference: 'NeurIPS 2025 Workshop on Bridging Language, Agent, and World Models (LAW 2025)'
+conference: 'NeurIPS 2025 Workshop LAW'
 
 resources:
   paper: https://openreview.net/forum?id=CP0H9NAWES
@@ -23,7 +23,7 @@ description: >
 
 image: neurips_ws_teaser_top.png
 
-url: https://Kotoge.github.io/DGPO
+url: https://omron-sinicx.github.io/DGPO
 
 authors:
   - name: Rikuto Kotoge
