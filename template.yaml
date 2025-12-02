@@ -21,7 +21,7 @@ description: >
   Distillation-Guided Policy Optimization (DGPO), a two-phase training framework combining
   cold-start knowledge distillation and selective teacher-guided reinforcement learning.
 
-image: neurips_ws_teaser_top.png
+image: https://omron-sinicx.github.io/dgpo/acl26_fig2_v3.png
 
 url: https://omron-sinicx.github.io/DGPO
 
