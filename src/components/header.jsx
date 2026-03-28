@@ -88,6 +88,8 @@ export default class Header extends React.Component {
     const titleClass = `uk-${
       this.props.title.length > 15 ? 'h2' : 'h1'
     } uk-text-primary`;
+    const titleStyle =
+      this.props.title.length > 15 ? { fontSize: '1.7rem' } : {};
     const baseStyle = this.props.header?.bg_image
       ? {
           backgroundImage: `url(${this.props.header.bg_image})`,
@@ -115,7 +117,7 @@ export default class Header extends React.Component {
           <div style={backgroundStyle}>
             <div className="uk-container uk-container-small uk-section">
               <div className="uk-text-center uk-text-bold">
-                <p className={titleClass}>{this.props.title}</p>
+                <p className={titleClass} style={titleStyle}>{this.props.title}</p>
                 <span
                   className="uk-label uk-label-primary uk-text-center uk-margin-small-bottom"
                   style={{ fontFamily: 'Poppins' }}
