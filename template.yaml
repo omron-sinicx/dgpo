@@ -1,17 +1,17 @@
 theme: default
 organization: OMRON SINIC X
-twitter: '@omron_sinicx'
-title: 'Democratizing Agentic RAG: Distillation-Guided Policy Optimization for Compact Language Models'
-conference: 'NeurIPS 2025 Workshop LAW'
+twitter: "@omron_sinicx"
+title: "Can Compact Language Models Search Like Agents? Distillation-Guided Policy Optimization for Preserving Agentic RAG Capabilities"
+conference: "ACL 2026"
 
 resources:
   paper: https://openreview.net/forum?id=CP0H9NAWES
   poster:
-  code:
+  code: https://github.com/omron-sinicx/dgpo
   video:
   blog:
   demo:
-  huggingface:
+  huggingface: https://huggingface.co/collections/omron-sinicx/dgpo
 
 description: >
   We investigate whether compact language models (0.5–1B) can acquire sophisticated agentic
@@ -43,25 +43,33 @@ affiliations:
   - OMRON SINIC X Corporation
   - The University of Osaka
 
-contact_ids: ['omron', 2]
+contact_ids: ["omron", 2]
 
 meta:
-  - '* Work done as a research intern at OMRON SINIC X.'
+  - "* Work done as a research intern at OMRON SINIC X."
 
 bibtex: >
-  @inproceedings{
-    kotoge2025democratizing,
-    title={Democratizing Agentic {RAG}: Distillation-Guided Policy Optimization  for Compact Language Models},
-    author={Rikuto Kotoge and Mai Nishimura and Jiaxin Ma},
-    booktitle={NeurIPS 2025 Workshop on Bridging Language, Agent, and World Models for Reasoning and Planning},
-    year={2025}
+  @inproceedings{kotoge2025dgpo,
+      title = "Can Compact Language Models Search Like Agents? Distillation-Guided Policy Optimization for Preserving Agentic RAG Capabilities",
+      author = "Kotoge, Rikuto and Nishimura, Mai and Ma, Jiaxin",
+      booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+      month = jul,
+      year = "2026",
+      publisher = "Association for Computational Linguistics",
+  }
+
+  @inproceedings{kotoge2025democratizing,
+      title = "Democratizing Agentic {RAG}: Distillation-Guided Policy Optimization for Compact Language Models",
+      author = "Kotoge, Rikuto and Nishimura, Mai and Ma, Jiaxin",
+      booktitle = "NeurIPS 2025 Workshop on Bridging Language, Agent, and World Models for Reasoning and Planning",
+      year = "2025",
+      url = "https://openreview.net/forum?id=CP0H9NAWES",
   }
 
 header:
-  bg_curve:
-    sinic_curve.png
+  bg_curve: sinic_curve.png
 
-teaser: neurips_ws_teaser_top.jpg
+teaser: acl26_fig1.png
 
 overview: |
   This project introduces **Distillation-Guided Policy Optimization (DGPO)**, a reinforcement
@@ -97,7 +105,6 @@ body:
           </div>
       </div>
 
-
   - title: Distillation-Guided Policy Optimization (DGPO)
     text: |
 
@@ -127,12 +134,10 @@ body:
 
       This objective allows the student to explore when confident but forces alignment with the teacher $\pi_g$ when it fails.
 
-
-
-  - title: Agentic RAG Capabilities (ARC) Evaluation
+  - title: Agentic RAG Capabilities (ARCap) Evaluation
     text: |
-      We introduce **Agentic RAG Capabilities (ARC)**, a fine-grained metric to diagnose *how* models perform agentic search,
-      rather than just checking final answer accuracy. ARC evaluates three dimensions:
+      We introduce **Agentic RAG Capabilities (ARCap)**, a fine-grained metric to diagnose *how* models perform agentic search,
+      rather than just checking final answer accuracy. ARCap evaluates three dimensions:
 
       * **Thinking:** The ability to plan search steps and synthesize evidence.
       * **Query Rewriting:** The ability to reformulate user questions into effective search queries.
@@ -140,10 +145,8 @@ body:
 
       <div class="uk-text-center uk-margin-medium-top uk-margin-medium-bottom">
         <img src="neurips_ws_teaser_bottom.jpg" alt="Agentic RAG Capabilities" style="max-width: 100%; height: auto;" />
-        <p class="uk-text-meta uk-margin-small-top">Figure 4: ARC characterizes thinking, query rewriting, and source referencing capabilities.</p>
+        <p class="uk-text-meta uk-margin-small-top">Figure 4: ARCap characterizes thinking, query rewriting, and source referencing capabilities.</p>
       </div>
-
-
 
   - title: Experimental Results
     text: |
@@ -168,7 +171,7 @@ body:
         </thead>
         <tbody>
           <tr style="color: gray;">
-            <td>Student-0.5b</td>
+            <td>🐣 Student-0.5b</td>
             <td>0.004</td>
             <td>0.006</td>
             <td>0.007</td>
@@ -179,7 +182,7 @@ body:
             <td>0.006</td>
           </tr>
           <tr style="color: gray;">
-            <td>Teacher-3b</td>
+            <td>🎓 Teacher-3b</td>
             <td>0.365</td>
             <td>0.569</td>
             <td>0.393</td>
@@ -192,8 +195,8 @@ body:
           <tr>
             <td>PPO</td>
             <td>0.306</td>
-            <td><u>0.444</u></td>
-            <td><u>0.379</u></td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.444</td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.379</td>
             <td>0.205</td>
             <td>0.218</td>
             <td>0.041</td>
@@ -228,19 +231,19 @@ body:
             <td>0.431</td>
             <td>0.373</td>
             <td>0.286</td>
-            <td><u>0.284</u></td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.284</td>
             <td>0.091</td>
-            <td><b>0.290</b></td>
-            <td><u>0.298</u></td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);">0.290</td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.298</td>
           </tr>
           <tr>
             <td>DistiLLM</td>
-            <td><u>0.333</u></td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.333</td>
             <td>0.442</td>
             <td>0.373</td>
             <td>0.288</td>
             <td>0.270</td>
-            <td><u>0.095</u></td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.095</td>
             <td>0.209</td>
             <td>0.287</td>
           </tr>
@@ -249,31 +252,31 @@ body:
             <td>0.325</td>
             <td>0.427</td>
             <td>0.365</td>
-            <td><u>0.290</u></td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.290</td>
             <td>0.270</td>
             <td>0.079</td>
             <td>0.218</td>
             <td>0.282</td>
           </tr>
-          <tr style="font-weight: bold;">
+          <tr>
             <td>DGPO (ours)</td>
-            <td style="background-color: #d1e7dd;">0.378</td>
-            <td>0.481</td>
-            <td style="background-color: #d1e7dd;">0.402</td>
-            <td style="background-color: #d1e7dd;">0.342</td>
-            <td>0.303</td>
-            <td>0.120</td>
-            <td><u>0.274</u></td>
-            <td>0.329</td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.378 🏅</b></td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);">0.481</td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.402 🏅</b></td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.342 🏅</b></td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);">0.303</td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);">0.120</td>
+            <td style="background-color: rgba(226, 218, 205, 0.55);">0.274</td>
+            <td style="background-color: rgba(190, 209, 202, 0.55);">0.329</td>
           </tr>
         </tbody>
       </table>
       </div>
-      <p class="uk-text-meta">Table 1: Overall performance. Best results are bold, second-best are underlined. Green highlight indicates outperforming the teacher.</p>
+      <p class="uk-text-meta">Table 1: Overall performance. <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. <b>Bold</b> 🏅 indicates outperforming the teacher.</p>
 
-      
-      ### Agentic RAG Capabilities (ARC) Analysis
-      We utilized the ARC framework to diagnose how DGPO improves agentic behaviors compared to the teacher and baselines.
+
+      ### Agentic RAG Capabilities (ARCap) Analysis
+      We utilized the ARCap framework to diagnose how DGPO improves agentic behaviors compared to the teacher and baselines.
 
       * **(a) Source Referencing:** DGPO provides strong information extraction when the correct evidence is directly available.
       * **(b) Query Rewriting:** DGPO achieves teacher-level query rewriting.
@@ -306,15 +309,15 @@ body:
                  </tr>
                  <tr style="color: gray;">
                    <td>Teacher-3B</td>
-                   <td><b>0.589</b></td>
+                   <td>0.589</td>
                    <td>0.560</td>
-                   <td><b>0.413</b></td>
-                   <td><b>0.357</b></td>
+                   <td>0.413</td>
+                   <td>0.357</td>
                  </tr>
                  <tr>
                    <td>PPO</td>
-                   <td>0.547</td>
-                   <td>0.581</td>
+                   <td style="background-color: rgba(226, 218, 205, 0.55);">0.547</td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.581</b></td>
                    <td>0.258</td>
                    <td>0.242</td>
                  </tr>
@@ -322,20 +325,20 @@ body:
                    <td>KD</td>
                    <td>0.540</td>
                    <td>0.544</td>
-                   <td>0.321</td>
-                   <td>0.256</td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);">0.321</td>
+                   <td style="background-color: rgba(226, 218, 205, 0.55);">0.256</td>
                  </tr>
-                 <tr style="background-color: #f8f9fa;">
-                   <td><b>DGPO (Ours)</b></td>
-                   <td>0.565</td>
-                   <td><b>0.593</b></td>
-                   <td>0.312</td>
-                   <td>0.287</td>
+                 <tr>
+                   <td>DGPO (Ours)</td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);">0.565</td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.593</b></td>
+                   <td style="background-color: rgba(226, 218, 205, 0.55);">0.312</td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);">0.287</td>
                  </tr>
                </tbody>
              </table>
            </div>
-           <p class="uk-text-meta">Table 2: Source Referencing & Thinking Acc. (EM)</p>
+           <p class="uk-text-meta">Table 2: Source Referencing & Thinking Acc. (EM). <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. <b>Bold</b> 🏅 indicates outperforming the teacher.</p>
         </div>
 
         <div>
@@ -369,30 +372,30 @@ body:
                  </tr>
                  <tr>
                    <td>PPO</td>
-                   <td><b>0.711</b></td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);"><b>0.711</b></td>
                    <td>0.568</td>
                    <td>1.68</td>
                  </tr>
                  <tr>
                    <td>KD</td>
-                   <td>0.675</td>
-                   <td>0.570</td>
+                   <td style="background-color: rgba(226, 218, 205, 0.55);">0.675</td>
+                   <td style="background-color: rgba(226, 218, 205, 0.55);">0.570</td>
                    <td>2.45</td>
                  </tr>
-                 <tr style="background-color: #f8f9fa;">
-                   <td><b>DGPO (Ours)</b></td>
+                 <tr>
+                   <td>DGPO (Ours)</td>
                    <td>0.682</td>
-                   <td><b>0.583</b></td>
+                   <td style="background-color: rgba(190, 209, 202, 0.55);">0.583</td>
                    <td>2.64</td>
                  </tr>
                </tbody>
              </table>
            </div>
         </div>
-        <p class="uk-text-meta">Table 3: Query Rewriting & Search Efficiency</p>
+        <p class="uk-text-meta">Table 3: Query Rewriting & Search Efficiency. <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. <b>Bold</b> 🏅 indicates outperforming the teacher.</p>
       </div>
-      
-      
+
+
       ### Training Stability
       DGPO maintains stable learning curves well beyond where other methods collapse. As shown below, while GRPO and standard PPO
       struggle with the 0.5B model, DGPO sustains performance gains up to 1000 training steps.
@@ -401,3 +404,6 @@ body:
         <img src="acl_26_curve_v2.jpg" alt="Training Stability Curve" style="width: 70%; height: auto;" />
         <p class="uk-text-meta uk-margin-small-top">Figure 5: Training stability comparison. DGPO (red) maintains stable improvement while baselines collapse.</p>
       </div>
+  - title: Acknowledgement
+    text: |
+      This work was supported by JST AIP Acceleration Research, Japan, Grant Number `JPMJCR23U2` and JST PRESTO, Japan, Grant Number `JPMJPR2518`.
