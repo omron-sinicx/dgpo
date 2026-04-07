@@ -338,7 +338,7 @@ body:
                </tbody>
              </table>
            </div>
-           <p class="uk-text-meta">Table 2: Source Referencing & Thinking Acc. (EM). <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. <b>Bold</b> 🏅 indicates outperforming the teacher.</p>
+           <p class="uk-text-meta">Table 2: Source Referencing & Thinking Acc. (EM). <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. </p>
         </div>
 
         <div>
@@ -392,7 +392,7 @@ body:
              </table>
            </div>
         </div>
-        <p class="uk-text-meta">Table 3: Query Rewriting & Search Efficiency. <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted. <b>Bold</b> 🏅 indicates outperforming the teacher.</p>
+        <p class="uk-text-meta">Table 3: Query Rewriting & Search Efficiency. <span style="background-color: rgba(190, 209, 202, 0.7); padding: 1px 6px;">Best</span> and <span style="background-color: rgba(226, 218, 205, 0.7); padding: 1px 6px;">second-best</span> results are highlighted.</p>
       </div>
 
 
