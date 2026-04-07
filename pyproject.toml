@@ -1,0 +1,146 @@
+[project]
+name = "dgpo"
+version = "0.1.0"
+description = "DGPO: Distilation-Guided Policy Optimization for Preserving Agentic RAG Capabilities"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">= 3.9"
+authors = [
+  { name = "Rikuto Kotoge", email = "rikuto88@sanken.osaka-u.ac.jp" },
+  { name = "Mai Nishimura", email = "mai.nishimura@sinicx.com" },
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest", "yapf"]
+
+[dependency-groups]
+agent = [
+  "accelerate>=1.10.1,<2",
+  "codetiming>=1.4.0,<2",
+  "flash-attn>=2.8.3,<3",
+  "hydra-core>=1.3.2,<2",
+  "omegaconf>=2.3.0,<3",
+  "tensordict>=0.10.0,<0.11",
+  "vllm==0.6.3",
+  "wandb>=0.25.0,<0.26",
+]
+retriever = [
+  "datasets>=4.5.0,<5",
+  "fastapi>=0.129.0,<0.130",
+  "pyserini>=0.24.0,<0.25",
+  "transformers>=5.1.0,<6",
+  "uvicorn>=0.40.0,<0.41",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.pypi-dependencies]
+
+[tool.pixi.feature.agent]
+channels = ["nvidia/label/cuda-12.1.1", "nvidia", "conda-forge"]
+
+# pypi-based environments for LLM training
+[tool.pixi.feature.agent.dependencies]
+python = "3.9.*"
+setuptools = ">=80.9.0,<81"
+cuda = "==12.1.1"
+
+[tool.pixi.feature.agent.pypi-options]
+no-build-isolation = ["flash-attn"]
+
+[tool.pixi.feature.agent.pypi-dependencies]
+torch = { version = "==2.4.0", index = "https://download.pytorch.org/whl/cu121" }
+dgpo = { path = ".", editable = true }
+
+[tool.pixi.feature.retriever]
+channels = ["pytorch", "nvidia", "conda-forge"]
+
+# conda-based environments for faiss
+[tool.pixi.feature.retriever.dependencies]
+python = "3.10.*"
+pytorch = "==2.4.0"
+torchvision = "==0.19.0"
+torchaudio = "==2.4.0"
+pytorch-cuda = "12.1.*"
+faiss-gpu = "==1.8.0"
+
+[tool.pixi.feature.lint.dependencies]
+tombi = "*"
+
+[tool.pixi.tasks]
+format-toml = { cmd = "tombi format", default-environment = "lint", description = "Format TOML files with tombi" }
+# To get omron-sinicx/{model_name}, generate "Read" token via https://huggingface.co/settings/tokens
+login-hf = { cmd = "huggingface-cli login", default-environment = "agent", description = "Login to Hugging Face" }
+login-wandb = { cmd = "wandb login", default-environment = "agent", description = "Login to W&B" }
+download-dataset = { cmd = "hf download PeterJinGo/nq_hotpotqa_train --repo-type dataset --local-dir {{ data }}", default-environment = "agent", description = "Download NQ/HotpotQA training data", args = [
+  { "arg" = "data", default = "$DATA_ROOT/nq_hotpotqa_train" },
+] }
+train = { cmd = [
+  "./scripts/train_dgpo.sh",
+  "--data-name",
+  "{{ data_name }}",
+  "--student-model",
+  "{{ student_model }}",
+  "--teacher-model",
+  "{{ teacher_model }}",
+  "--experiment-name",
+  "{{ experiment_name }}",
+], default-environment = "agent", description = "Train model w/ DGPO", args = [
+  { "arg" = "data_name", "default" = "nq_hotpotqa_train" },
+  { "arg" = "student_model", "default" = "omron-sinicx/Qwen2.5-0.5B-Instruct-kd" },
+  { "arg" = "teacher_model", "default" = "omron-sinicx/SearchR1-ppo-qwen2.5-3b-instruct" },
+  { "arg" = "experiment_name", "default" = "dgpo-qwen2.5-0.5b" },
+] }
+test = { cmd = [
+  "./scripts/test_dgpo.sh",
+  "--data-name",
+  "{{ data_name }}",
+  "--model",
+  "{{ model }}",
+  "--experiment-name",
+  "{{ experiment_name }}",
+], args = [
+  { "arg" = "data_name", "default" = "nq_hotpotqa_train" },
+  { "arg" = "model", "default" = "omron-sinicx/DGPO-qwen2.5-0.5b" },
+  { "arg" = "experiment_name", "default" = "dgpo-test" },
+] }
+download-corpus = { cmd = "./download.sh", cwd = "scripts", default-environment = "retriever", description = "Download indexing and corpus (133.66GB)" }
+start = { cmd = [
+  "python",
+  "-m",
+  "search_r1.search.retrieval_server",
+  "--index_path",
+  "$RETRIEVER_DATA_PATH/e5_Flat.index",
+  "--corpus_path",
+  "$RETRIEVER_DATA_PATH/wiki-18.jsonl",
+  "--topk",
+  "3",
+  "--retriever_name",
+  "e5",
+  "--retriever_model",
+  "intfloat/e5-base-v2",
+  "--faiss_gpu",
+], default-environment = "retriever", description = "Start retrieval server" }
+download = { depends-on = [
+  { task = "download-corpus", environment = "retriever" },
+  { task = "download-dataset", environment = "agent" },
+], description = "Download corpus and dataset" }
+
+[tool.pixi.activation.env]
+RETRIEVER_DATA_PATH = "$PIXI_PROJECT_ROOT/retriever_root"
+EXP_ROOT = "$PIXI_PROJECT_ROOT/exp_root"
+DATA_ROOT = "$PIXI_PROJECT_ROOT/data"
+
+[tool.pixi.environments]
+agent = ["agent"]
+retriever = ["retriever"]
+lint = ["lint"]
+
+[tool.setuptools.packages.find]
+include = ["search_r1*", "verl*"]
