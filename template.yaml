@@ -5,7 +5,7 @@ title: "Can Compact Language Models Search Like Agents? Distillation-Guided Poli
 conference: "ACL 2026"
 
 resources:
-  paper: https://openreview.net/forum?id=CP0H9NAWES
+  paper: https://arxiv.org/abs/2508.20324
   poster:
   code: https://github.com/omron-sinicx/dgpo
   video:
