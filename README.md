@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-    <sup>1</sup>Osaka University &nbsp;
+    <sup>1</sup>The University of Osaka &nbsp;
     <sup>2</sup>OMRON SINIC X Corporation
 </p>
 
@@ -125,7 +125,6 @@ pixi run start
 ```bash
 pixi run test {data_name} {model} {exp_name}
 ```
-You can modify the ```question``` on line 7 and  the ```model``` on line 10  to something you're interested in.
 
 
 ## :octocat: Acknowledgement
