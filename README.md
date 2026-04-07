@@ -138,7 +138,7 @@ This work was supported by JST AIP Acceleration Research `JPMJCR23U2` and JST PR
 ## 📝 Citation
 
 ```bibtex
-@inproceedings{kotoge2025dgpo,
+@inproceedings{kotoge2026dgpo,
     title = "Can Compact Language Models Search Like Agents? Distillation-Guided Policy Optimization for Preserving Agentic RAG Capabilities",
     author = "Kotoge, Rikuto and Nishimura, Mai and Ma, Jiaxin",
     booktitle = "Proceedings of the 64th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
