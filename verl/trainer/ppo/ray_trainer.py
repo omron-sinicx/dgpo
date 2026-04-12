@@ -123,7 +123,7 @@ def apply_kl_penalty(data: DataProto, kl_ctrl: core_algos.AdaptiveKLController, 
     return data, metrics  
   
 def create_reward_based_mask(data: DataProto, response_length: int):  
-    """reward=0のデータのみにKLペナルティを適用するマスクを作成"""  
+    """Create a mask that applies the KL penalty only to samples with zero reward."""  
     batch_size = len(data)  
       
     token_level_scores = data.batch['token_level_scores']  # shape: (B, T)
@@ -134,7 +134,7 @@ def create_reward_based_mask(data: DataProto, response_length: int):
     return reward_mask
 
 def safe_masked_mean(x: torch.Tensor, mask: torch.Tensor, axis=-1, eps=1e-8):
-    """分母0行は 0.0 を返し、全体平均では NaN を出さない"""
+    """Return 0.0 for rows with a zero denominator and avoid NaN in the overall mean."""
     mask = mask.to(dtype=x.dtype)
     denom = mask.sum(dim=axis, keepdim=False)           # [B]
     num   = (x * mask).sum(dim=axis, keepdim=False)     # [B]
@@ -574,7 +574,7 @@ class RayPPOTrainer(object):
         search_presences = np.array(search_presence_lst)
         info_flags = np.array(info_contains_answer_lst)
 
-        # データソース別に集計
+        # Aggregate by data source.
         data_source_reward = {}
         data_source_search_count = {}
         data_source_search_presence = {}
@@ -586,7 +586,7 @@ class RayPPOTrainer(object):
             data_source_search_presence.setdefault(ds, []).append(search_presences[i])
             data_source_info_answer.setdefault(ds, []).append(info_flags[i])
 
-        # メトリクス作成
+        # Build metrics.
         metric_dict = {}
         for ds in data_source_reward:
             metric_dict[f'val/test_score/{ds}'] = np.mean(data_source_reward[ds])

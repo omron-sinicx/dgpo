@@ -1,5 +1,5 @@
 <div align="center">
-<h1>DGPO: Distillation-Guided Policy Optimization for Preserving Agentic RAG Capabilities</h1>
+<h1>DGPO: Distillation-Guided Policy Optimization for Preserving Agentic RAG Capabilities (ACL 2026, main, oral)</h1>
 
 <p align="center">
     Rikuto Kotoge<sup>1</sup> &nbsp;
